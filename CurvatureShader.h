@@ -92,7 +92,7 @@ public:
 
 		void	dirtyAll();
 		
-		MStatus setColorMap(int preset);
+		MStatus setColorMap();
 
 		static void preConnection(MPlug &srcPlug, MPlug &destPlug, bool made, void *clientData);
 		CurvatureShaderData* getDataPtr(MDagPath& path);
@@ -102,7 +102,6 @@ public:
 		static MObject aColorMap;
 		static MObject aFlatShading;
 		static MObject aScale;
-		static MObject aPreset;
 
 		static MCallbackIdArray callbacks;
 
@@ -114,7 +113,6 @@ private:
 	double m_scale;
 	bool
 		m_dirtyScale = true,
-		m_dirtyPreset = true,
 		m_dirtyMap = true,
 		m_dirtyShading = true;
 };

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug 2017|x64">
-      <Configuration>Debug 2017</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Maya2016.5|x64">
       <Configuration>Maya2016.5</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Maya2016|x64">
+      <Configuration>Maya2016</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Maya2017|x64">
@@ -38,7 +38,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug 2017|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -56,7 +56,7 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016.5|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug 2017|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Maya2017|x64'" Label="PropertySheets">
@@ -67,22 +67,25 @@
     <_ProjectFileVersion>14.0.25123.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016.5|x64'">
-    <OutDir>$(PARAMATRIX_PATH)\2016.5\plug-ins\</OutDir>
+    <OutDir>$(PARAMATRIX_PATH)2016.5\plug-ins\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.mll</TargetExt>
+    <TargetName>$(ProjectName)_x64_2016.5</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug 2017|x64'">
-    <OutDir>$(PARAMATRIX_PATH)\2017\plug-ins\</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016|x64'">
+    <OutDir>$(PARAMATRIX_PATH)2016\plug-ins\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.mll</TargetExt>
+    <TargetName>$(ProjectName)_x64_2016</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Maya2017|x64'">
-    <OutDir>$(PARAMATRIX_PATH)\2017\plug-ins\</OutDir>
+    <OutDir>$(PARAMATRIX_PATH)2017\plug-ins\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.mll</TargetExt>
+    <TargetName>$(ProjectName)_x64_2017</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016.5|x64'">
     <Midl>
@@ -105,7 +108,7 @@
       <AdditionalOptions>/export:initializePlugin /export:uninitializePlugin
  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Foundation.lib;OpenMaya.lib;OpenMayaUI.lib;OpenMayaAnim.lib;OpenMayaFX.lib;OpenMayaRender.lib;Image.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ProjectName).mll</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName).mll</OutputFile>
       <AdditionalLibraryDirectories>$(MAYA_2016_5_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -114,7 +117,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug 2017|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
@@ -135,8 +138,8 @@
       <AdditionalOptions>/export:initializePlugin /export:uninitializePlugin
  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Foundation.lib;OpenMaya.lib;OpenMayaUI.lib;OpenMayaAnim.lib;OpenMayaFX.lib;OpenMayaRender.lib;Image.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ProjectName).mll</OutputFile>
-      <AdditionalLibraryDirectories>$(MAYA_2017_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>$(OutDir)$(TargetName).mll</OutputFile>
+      <AdditionalLibraryDirectories>$(MAYA_2016_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -165,7 +168,7 @@
       <AdditionalOptions>/export:initializePlugin /export:uninitializePlugin
  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Foundation.lib;OpenMaya.lib;OpenMayaUI.lib;OpenMayaAnim.lib;OpenMayaFX.lib;OpenMayaRender.lib;Image.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(ProjectName).mll</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName).mll</OutputFile>
       <AdditionalLibraryDirectories>$(MAYA_2017_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -178,16 +181,34 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(MAYA_2016_5_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" "$(ProjectDir)release\plug-ins\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)prefs\icons\$(ProjectName)" "$(ProjectDir)release\prefs\icons\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)scripts\$(ProjectName)" "$(ProjectDir)release\scripts\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)readme.txt" "$(ProjectDir)release\" /s /i /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug 2017|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Maya2016|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MAYA_2017_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MAYA_2016_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" "$(ProjectDir)release\plug-ins\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)prefs\icons\$(ProjectName)" "$(ProjectDir)release\prefs\icons\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)scripts\$(ProjectName)" "$(ProjectDir)release\scripts\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)readme.txt" "$(ProjectDir)release\" /s /i /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Maya2017|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(MAYA_2017_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" "$(ProjectDir)release\plug-ins\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)prefs\icons\$(ProjectName)" "$(ProjectDir)release\prefs\icons\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)scripts\$(ProjectName)" "$(ProjectDir)release\scripts\" /s /i /y
+xcopy "$(PARAMATRIX_PATH)readme.txt" "$(ProjectDir)release\" /s /i /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

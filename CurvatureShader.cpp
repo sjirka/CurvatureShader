@@ -8,7 +8,6 @@
 MObject			 CurvatureShader::aColorMap;
 MObject			 CurvatureShader::aFlatShading;
 MObject			 CurvatureShader::aScale;
-MObject			 CurvatureShader::aPreset;
 MCallbackIdArray CurvatureShader::callbacks;
 const MTypeId	 CurvatureShader::typeId(0x00127883);
 
@@ -25,7 +24,7 @@ void* CurvatureShader::creator(){
 
 void CurvatureShader::postConstructor() {
 	setMPSafe(true);
-	setColorMap(0);
+	setColorMap();
 }
 
 MStatus CurvatureShader::initialize(){
@@ -40,13 +39,6 @@ MStatus CurvatureShader::initialize(){
 	status = addAttribute(aColorMap);
 	CHECK_MSTATUS_AND_RETURN_IT(status);
 	attributeAffects(aColorMap, outColor);
-
-	aPreset = eAttr.create("useMap", "um", 0, &status);
-	CHECK_MSTATUS_AND_RETURN_IT(status);
-	eAttr.addField("RGB", 0);
-	status = addAttribute(aPreset);
-	CHECK_MSTATUS_AND_RETURN_IT(status);
-	attributeAffects(aPreset, outColor);
 
 	aFlatShading = nAttr.create("flatShading", "fs", MFnNumericData::kBoolean, 1, &status);
 	CHECK_MSTATUS_AND_RETURN_IT(status);
@@ -213,6 +205,9 @@ MStatus CurvatureShader::updateCurvature(int indexCount, const unsigned int *ind
 			
 			// Iterate over vertices in a triangle
 			for (unsigned int t = 0; t < 3; t++) {
+				if (vertexCount <= (int)indexArray[i + t])
+					return MS::kSuccess;
+
 				unsigned int idA = vertexIDs[indexArray[i + t]];
 
 				if (!dirty[idA])
@@ -288,10 +283,12 @@ MStatus CurvatureShader::setDependentsDirty(const MPlug& plug, MPlugArray& plugA
 	if (plug == aScale)
 		m_dirtyScale = true;
 
-	if (plug == aPreset)
-		m_dirtyPreset = true;
-
-	if (plug == aColorMap)
+	MPlug dirtyPlug(plug);
+	if (dirtyPlug.isChild())
+		dirtyPlug = dirtyPlug.parent();
+	if (dirtyPlug.isElement())
+		dirtyPlug = dirtyPlug.array();
+	if (dirtyPlug == aColorMap)
 		m_dirtyMap = true;
 
 	if (plug == aFlatShading)
@@ -300,29 +297,20 @@ MStatus CurvatureShader::setDependentsDirty(const MPlug& plug, MPlugArray& plugA
 	return MS::kSuccess;
 }
 
-MStatus CurvatureShader::setColorMap(int preset){
+MStatus CurvatureShader::setColorMap(){
 	MStatus status(MStatus::kSuccess);
 
 	MRampAttribute map(thisMObject(), aColorMap, &status);
 	CHECK_MSTATUS(status);
 
 	MColorArray col;
+
+	col.append(0.0f, 0.0f, 1.0f);
+	col.append(0.0f, 1.0f, 0.0f);
+	col.append(1.0f, 0.0f, 0.0f);
+
 	MFloatArray pos;
 	MIntArray itp;
-
-	switch (preset) {
-	case 0:
-		col.append(0.0f, 0.0f, 1.0f);
-		col.append(0.0f, 1.0f, 0.0f);
-		col.append(1.0f, 0.0f, 0.0f);
-		break;
-	default:
-		col.append(0.0f, 0.0f, 1.0f);
-		col.append(0.0f, 1.0f, 0.0f);
-		col.append(1.0f, 0.0f, 0.0f);
-		break;
-	}
-
 	for (unsigned i = 0; i < col.length(); i++) {
 		pos.append(float(i) * 1.0f / (col.length() - 1));
 		itp.append(MRampAttribute::kLinear);
@@ -351,22 +339,14 @@ CurvatureShaderData* CurvatureShader::getDataPtr(MDagPath& path) {
 MStatus CurvatureShader::compute(const MPlug& plug, MDataBlock& datablock){
 	MStatus status(MStatus::kSuccess);
 
-	// Update attributes
-	if (m_dirtyPreset){
-		m_dirtyPreset = false;
-
-		int preset = datablock.inputValue(aPreset).asShort();
-		status = setColorMap(preset);
-		CHECK_MSTATUS_AND_RETURN_IT(status);
-
+	if (m_dirtyScale) {
+		m_dirtyScale = false;
+		m_scale = datablock.inputValue(aScale).asDouble();
 		dirtyAll();
 	}
 
-	if (m_dirtyScale) {
-		m_dirtyScale = false;
-
-		m_scale = datablock.inputValue(aScale).asDouble();
-
+	if (m_dirtyMap) {
+		m_dirtyMap = false;
 		dirtyAll();
 	}
 
